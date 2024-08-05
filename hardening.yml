@@ -11,15 +11,20 @@
       path: /etc/ssh/sshd_config
       regexp: '^#PermitRootLogin'
       line: PermitRootLogin no
+    notify: 
+      - reiniciar SSH Ubuntu
+      - reiniciar SSH CentOS
+  
+  handlers:
 
-  - name: aplico los cambios reiniciando SSH Ubuntu
+  - name: reiniciar SSH Ubuntu
     ansible.builtin.service:
       state: restarted
       name: ssh
     when: ansible_facts['os_family'] == "Debian"
 
 
-  - name: aplico los cambios reiniciando SSH CentOS
+  - name: reiniciar SSH CentOS
     ansible.builtin.service:
       state: restarted
       name: sshd

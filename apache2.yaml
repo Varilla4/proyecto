@@ -1,0 +1,19 @@
+---
+- hosts: ubuntu
+  user: agonzalez
+  become: yes
+  tasks:
+    - name: Ensure apache2 package is installed
+      ansible.builtin.apt:
+        pkg: apache2
+        state: present
+
+    - name: Ensure latest index.html file is present
+      ansible.builtin.copy:
+        src: ./files/index.html
+        dest: /var/www/html/index.html
+
+    - name: Restart apache2
+      ansible.builtin.service:
+        name: apache2
+        state: restarted

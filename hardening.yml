@@ -1,0 +1,26 @@
+---
+- name: hardening SSH de servers
+  hosts: linux
+  become: yes
+  user: agonzalez
+
+  tasks:
+
+  - name: Quito login root
+    ansible.builtin.lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: '^#PermitRootLogin'
+      line: PermitRootLogin no
+
+  - name: aplico los cambios reiniciando SSH Ubuntu
+    ansible.builtin.service:
+      state: restarted
+      name: ssh
+    when: ansible_facts['os_family'] == "Debian"
+
+
+  - name: aplico los cambios reiniciando SSH CentOS
+    ansible.builtin.service:
+      state: restarted
+      name: sshd
+    when: ansible_facts['os_family'] == "RedHat"    
